@@ -1,17 +1,18 @@
+## TP4 - DEMO 
 
- - **creating the users**  
-      1) Dev Team:
+ - **Créer les nouveaux utilisateurs comme suit:**  
+      A) Equipe Dev :
 
       * [ username: dev1, password: dev1 ]
       * [ username: dev2, password: dev2 ]
       
-      2) Test Team:
+      B) Equipe Test :
 
       * [ username: tester1, password: tester1 ]
       * [ username: tester2, password: tester2 ]
      
      
-     3) DevSecOps Team:      
+     C) Equipe DevSecOps :      
       * [ username: devsecops1, password: devsecops1 ]
       * [ username: devsecops2, password: devsecops2 ]
 
@@ -24,6 +25,9 @@ CREATE USER tester2 IDENTIFIED BY tester2;
 CREATE USER devsecops1 IDENTIFIED BY devsecops1;
 CREATE USER devsecops2 IDENTIFIED BY devsecops2;
 ```
+  --->  **Une fois qu'un utilisateur est créé, le DBA peut octroyer des privilèges de système spécifiques à cet utilisateur.**
+ 
+
   - **Attribuer les privilèges ci-dessous à l'utilisateur dev1 :** 
  
      * Création de procédures stockées.
@@ -33,7 +37,7 @@ CREATE USER devsecops2 IDENTIFIED BY devsecops2;
      * Création,lecture, modification de structure et suppression de tables.
 
 ```sql
-GRANT CREATE PROCEDURE, CREATE VIEW, CREATE SEQUENCE, CREATE SESSION, CREATE ANY TABLE, SELECT ANY TABLE, ALTER ANY TABLE, DROP ANY TABLE TO dev1;
+GRANT CREATE PROCEDURE, CREATE VIEW, CREATE SEQUENCE, CREATE ANY TABLE, SELECT ANY TABLE, ALTER ANY TABLE, DROP ANY TABLE, CREATE SESSION TO dev1;
 ```
 
 ¤   **Une fois qu'un utilisateur est créé, le DBA peut octroyer des privilèges de système spécifiques à cet utilisateur.**
@@ -42,7 +46,7 @@ GRANT CREATE PROCEDURE, CREATE VIEW, CREATE SEQUENCE, CREATE SESSION, CREATE ANY
    - **Révoquer tous les privilèges associès à l'utilisateur dev1 :** 
 
 ```sql
-REVOKE CREATE PROCEDURE, CREATE VIEW, CREATE SEQUENCE, CREATE SESSION, CREATE ANY TABLE, SELECT ANY TABLE, ALTER ANY TABLE, DROP ANY TABLE FROM dev1;
+REVOKE CREATE PROCEDURE, CREATE VIEW, CREATE SEQUENCE, CREATE ANY TABLE, SELECT ANY TABLE, ALTER ANY TABLE, DROP ANY TABLE, CREATE SESSION FROM dev1;
 ```
 
  
@@ -64,19 +68,22 @@ REVOKE CREATE PROCEDURE, CREATE VIEW, CREATE SEQUENCE, CREATE SESSION, CREATE AN
      
      C) Le rôle de l'équipe DevSecOps permet d'avoir tous les privilèges avec mode administrateur de la base:  
 
+- **DevTeam:**
+
 ```sql
 CREATE ROLE DevTeam;
-GRANT CREATE PROCEDURE, CREATE VIEW, CREATE SEQUENCE, CREATE SESSION, CREATE ANY TABLE, SELECT ANY TABLE, ALTER ANY TABLE, DROP ANY TABLE TO DevTeam;
+GRANT CREATE PROCEDURE, CREATE VIEW, CREATE SEQUENCE, CREATE ANY TABLE, SELECT ANY TABLE, ALTER ANY TABLE, DROP ANY TABLE, CREATE SESSION TO DevTeam;
 ```
+- **DevTeam:**
 ```sql
 CREATE ROLE TestTeam;
 GRANT CONNECT, CREATE SESSION, SELECT ANY TABLE TO TestTeam;
 ```
+- **DevTeam:**
 ```sql
 CREATE ROLE DevSecOpsTeam;
 GRANT ALL PRIVILEGES TO DevSecOpsTeam WITH ADMIN OPTION;
 ```
-
  
    - **Attribuer à chaque utilisateur, le rôle qui lui correspond:** 
   
@@ -93,10 +100,11 @@ GRANT DevSecOpsTeam to devsecops1, devsecops2;
 
    - **Limiter l'accès pour les testeurs de sorte qu'ils n'accèdent qu'à la table des employés "EMP":** 
   
-
+- **remove the SELECT access first:**
 ```sql
-REVOKE SELECT ANY TABLE FROM TestTeam;
+REVOKE SELECT ANY TABLE FROM TestTeam;REVOKE SELECT ANY TABLE FROM TestTeam;
 ```
+- **grant access to EMP table:**
 
  ```sql
 GRANT SELECT ON emp TO TestTeam;
@@ -118,7 +126,6 @@ GRANT SELECT ON emp TO PUBLIC;
 ```sql
 REVOKE ALL PRIVILEGES ON emp FROM DevSecOpsTeam;
 ```
-(P.S. If the previous question is to revoke privileges from users (on the emp table) only if these privileges are granted to them by a user with the role DevSecOpsTeam, I have not found a way to do so from my DBA session.)
 
 
 **Créer un profile de ressources dédié à l'équipe des développeurs avec les limitations suivantes:**
@@ -194,7 +201,7 @@ LOGICAL_READS_PER_SESSION DEFAULT
 LOGICAL_READS_PER_CALL 5000
 PRIVATE_SGA 80K
 PASSWORD_LIFE_TIME 60
-PASSWORD_REUSE_TIME 10;
+PASSWORD_REUSE_TIME 10
 ```
 
   - **Attribuer à l'utilisateur "dev1", le profile qui lui correspond:** 
