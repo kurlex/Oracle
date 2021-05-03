@@ -1,18 +1,17 @@
-## TP4 - Compte rendu - ESSID Belhassen - L2CS4 - ISI
 
- - **Créer les nouveaux utilisateurs comme suit:**  
-      A) Equipe Dev :
+ - **creating the users**  
+      1) Dev Team:
 
       * [ username: dev1, password: dev1 ]
       * [ username: dev2, password: dev2 ]
       
-      B) Equipe Test :
+      2) Test Team:
 
       * [ username: tester1, password: tester1 ]
       * [ username: tester2, password: tester2 ]
      
      
-     C) Equipe DevSecOps :      
+     3) DevSecOps Team:      
       * [ username: devsecops1, password: devsecops1 ]
       * [ username: devsecops2, password: devsecops2 ]
 
@@ -25,9 +24,6 @@ CREATE USER tester2 IDENTIFIED BY tester2;
 CREATE USER devsecops1 IDENTIFIED BY devsecops1;
 CREATE USER devsecops2 IDENTIFIED BY devsecops2;
 ```
-  --->  **Une fois qu'un utilisateur est créé, le DBA peut octroyer des privilèges de système spécifiques à cet utilisateur.**
- 
-
   - **Attribuer les privilèges ci-dessous à l'utilisateur dev1 :** 
  
      * Création de procédures stockées.
